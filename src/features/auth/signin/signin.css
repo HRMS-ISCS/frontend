@@ -1,0 +1,70 @@
+/*
+ * Motion and sizing for the sign-in screens. Scoped under `.auth-shell` or
+ * prefixed `auth-`, so none of it reaches the portal.
+ */
+
+/* The form assembles in a short cascade after the page transition lands. */
+@keyframes auth-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.auth-enter > * { animation: auth-rise 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.auth-enter > *:nth-child(2) { animation-delay: 60ms; }
+.auth-enter > *:nth-child(3) { animation-delay: 120ms; }
+.auth-enter > *:nth-child(4) { animation-delay: 180ms; }
+.auth-enter > *:nth-child(5) { animation-delay: 240ms; }
+
+/* A small shake on a failed sign-in, so the error is felt as well as read. */
+@keyframes auth-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+.auth-shake { animation: auth-shake 380ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+
+/* Showcase cards drift gently. */
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.auth-float { animation: auth-float 7s ease-in-out infinite; }
+.auth-float-late { animation-delay: -2.4s; }
+.auth-float-slow { animation-duration: 9s; animation-delay: -4.8s; }
+
+/* Showcase cards: a fixed 520x300 composition, centred in whatever space the
+ * panel has left and scaled down to fit it. Width rules come first so a
+ * short panel's smaller scale wins over a narrow panel's. */
+.auth-cards-area { container-type: size; }
+.auth-cards {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 520px;
+  height: 300px;
+  --auth-scale: 1;
+  transform: translate(-50%, -50%) scale(var(--auth-scale));
+}
+@container (max-width: 500px) { .auth-cards { --auth-scale: 0.8; } }
+@container (max-height: 300px) { .auth-cards { --auth-scale: 0.8; } }
+@container (max-height: 240px) { .auth-cards { --auth-scale: 0.62; } }
+@container (max-height: 190px) { .auth-cards { --auth-scale: 0.5; } }
+@container (max-height: 130px) { .auth-cards { display: none; } }
+
+/* Forgot / reset password still use the shared form controls; give them the
+ * same generous size as the sign-in fields while they sit in this shell. */
+.auth-shell .input {
+  min-height: 48px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+.auth-shell .btn-primary {
+  min-height: 48px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-enter > *, .auth-shake, .auth-float { animation: none; }
+}

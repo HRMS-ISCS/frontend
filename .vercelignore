@@ -1,0 +1,8 @@
+# Local-only files. The Vercel build takes its settings from the project's
+# environment variables, never from the developer's .env (which points the
+# API at the local dev proxy).
+.env
+.env.*
+!.env.example
+node_modules
+dist

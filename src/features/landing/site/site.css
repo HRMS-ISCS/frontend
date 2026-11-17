@@ -1,0 +1,31 @@
+/*
+ * Motion for the public landing page only. Every class is prefixed `site-`
+ * so nothing here can reach the portal screens.
+ */
+
+@keyframes site-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes site-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes site-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+.site-rise { animation: site-rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.site-rise-late { animation-delay: 160ms; }
+.site-fade { animation: site-fade 380ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+.site-float { animation: site-float 7s ease-in-out infinite; }
+.site-float-late { animation-delay: -2.3s; }
+.site-float-slow { animation-duration: 9s; animation-delay: -4.6s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-rise, .site-fade, .site-float { animation: none; }
+}

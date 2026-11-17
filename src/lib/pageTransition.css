@@ -1,0 +1,37 @@
+/*
+ * The animation for TransitionLink (see pageTransition.jsx). These pseudo
+ * elements exist only while a view transition is running, so nothing here
+ * touches a page at rest.
+ */
+
+/* Outgoing page: fades and recedes slightly. Quick, so it never feels slow. */
+::view-transition-old(root) {
+  animation: pt-out 240ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+/* Incoming page: rises into place, starting as the old one clears. */
+::view-transition-new(root) {
+  animation: pt-in 480ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+}
+
+/* The logo glides between its spot on each page. */
+::view-transition-group(brand-logo) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pt-out {
+  to { opacity: 0; transform: scale(0.985); }
+}
+
+@keyframes pt-in {
+  from { opacity: 0; transform: translateY(14px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

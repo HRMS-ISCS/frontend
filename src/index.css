@@ -1,0 +1,232 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-slate-50 font-sans text-[14px] leading-[1.45] text-slate-700;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1, h2, h3, h4 {
+    @apply text-slate-900;
+    text-wrap: balance;
+  }
+  /* Digits line up in every table, stat tile and salary breakup. */
+  table, .tabular, input[inputmode='numeric'] {
+    font-variant-numeric: tabular-nums;
+  }
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
+  }
+  /* One visible focus treatment for everything reachable by keyboard. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-white;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ---- Buttons ---------------------------------------------------------
+   * Weight signals role: primary is filled, secondary outlined, ghost bare.
+   * All three share one geometry so they line up in a toolbar.
+   * ------------------------------------------------------------------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-control
+      px-3.5 py-2 text-[13.5px] font-semibold transition-all duration-150
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60 focus-visible:ring-offset-2
+      disabled:pointer-events-none disabled:opacity-45;
+  }
+  .btn-primary {
+    @apply bg-brand-600 text-white shadow-brand-glow hover:bg-brand-700 active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply border border-slate-200 bg-white text-slate-700 shadow-xs
+      hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply text-slate-500 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.98];
+  }
+  .btn-danger {
+    @apply bg-red-600 text-white shadow-[0_6px_16px_-4px_rgb(220_38_38_/_0.32)] hover:bg-red-700 active:scale-[0.98];
+  }
+  .btn-success {
+    @apply bg-emerald-600 text-white shadow-[0_6px_16px_-4px_rgb(5_150_105_/_0.32)] hover:bg-emerald-700 active:scale-[0.98];
+  }
+  .btn-sm {
+    @apply gap-1.5 rounded-lg px-2.5 py-1.5 text-xs;
+  }
+  .btn-icon {
+    @apply p-2;
+  }
+
+  /* ---- Forms ----------------------------------------------------------- */
+  .input {
+    @apply block w-full rounded-control border border-slate-200 bg-white px-3 py-2 text-[13.5px] text-slate-800
+      shadow-xs transition-colors duration-150 placeholder:text-slate-400
+      hover:border-slate-300
+      focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-500/10
+      disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400;
+  }
+  .input-error {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-500/10;
+  }
+  .label {
+    @apply mb-1.5 block text-[13px] font-semibold text-slate-700;
+  }
+  .hint {
+    @apply mt-1.5 text-xs leading-relaxed text-slate-500;
+  }
+  .error-text {
+    @apply mt-1.5 text-xs font-medium text-red-600;
+  }
+
+  /* ---- Surfaces --------------------------------------------------------
+   * Border carries the edge; shadow only hints at lift. Cards that need to
+   * stand out get .card-raised rather than a heavier border, so the page
+   * keeps one flat baseline and lifts only what matters.
+   * ------------------------------------------------------------------- */
+  .card {
+    @apply rounded-card border border-slate-200/80 bg-white shadow-card;
+  }
+  .card-raised {
+    @apply rounded-card border border-slate-200/70 bg-white shadow-raised;
+  }
+  .card-interactive {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-float;
+  }
+  /* A quiet block for grouping inside a card - no second border. */
+  .well {
+    @apply rounded-xl bg-slate-50/80 p-4;
+  }
+  .divider {
+    @apply border-t border-slate-100;
+  }
+
+  /* Small uppercase label above a value or section. */
+  .eyebrow {
+    @apply text-micro font-semibold uppercase text-slate-400;
+  }
+
+  /* ---- Tables ----------------------------------------------------------
+   * Header is a quiet band, not a heavy rule; separation comes from the
+   * row borders. Hover is a full-row tint so long rows stay trackable.
+   * ------------------------------------------------------------------- */
+  .table-wrap {
+    @apply overflow-x-auto;
+  }
+  .data-table {
+    @apply min-w-full text-[13.5px];
+  }
+  .data-table thead th {
+    @apply whitespace-nowrap border-b border-slate-200 bg-slate-50/70 px-4 py-2.5 text-left
+      text-micro font-semibold uppercase text-slate-500;
+  }
+  .data-table tbody td {
+    @apply border-b border-slate-100 px-4 py-3 align-middle text-slate-600;
+  }
+  .data-table tbody tr {
+    @apply transition-colors duration-100 hover:bg-brand-50/40;
+  }
+  .data-table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  /* ---- Skeleton --------------------------------------------------------- */
+  .skeleton {
+    @apply relative overflow-hidden rounded-lg bg-slate-200/60;
+  }
+  .skeleton::after {
+    @apply absolute inset-0 -translate-x-full;
+    content: '';
+    background-image: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0) 0,
+      rgb(255 255 255 / 0.55) 60%,
+      rgb(255 255 255 / 0)
+    );
+    animation: shimmer 1.6s infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton::after { animation: none; }
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-300/80;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-400;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-dark::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-slate-700;
+  }
+  .scrollbar-dark::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ---- Staggered entrance -------------------------------------------------
+ * Put `stagger` on a grid or flex container and its direct children arrive in
+ * sequence instead of as one slab. Used for card rows, where the sequence
+ * reads as the page assembling itself rather than blinking into place.
+ *
+ * Its own keyframe rather than Tailwind's `slide-up`: Tailwind only emits a
+ * keyframe when the matching utility is used somewhere, so borrowing one would
+ * break silently the day the last `animate-slide-up` is deleted.
+ *
+ * `backwards` fill is the important part - without it a delayed child paints
+ * at full opacity first and then jumps back to hidden to start animating.
+ *
+ * The global prefers-reduced-motion rule collapses this to 0.01ms.
+ */
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.stagger > * {
+  animation: stagger-in 240ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+.stagger > *:nth-child(2) { animation-delay: 60ms; }
+.stagger > *:nth-child(3) { animation-delay: 120ms; }
+.stagger > *:nth-child(4) { animation-delay: 180ms; }
+.stagger > *:nth-child(5) { animation-delay: 240ms; }
+.stagger > *:nth-child(6) { animation-delay: 300ms; }
+
+/* The global reduced-motion rule collapses animation-duration but not
+ * animation-delay, so without this a reduced-motion reader still watches the
+ * cards appear one by one over 300ms - the exact staggering they opted out of.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .stagger > * { animation-delay: 0ms !important; }
+}
+
+/* ---- Page entrance ------------------------------------------------------
+ * The animation sits on the direct child, not on the wrapper, so it re-runs
+ * when a page swaps its loading root for its content root - not only when the
+ * route changes. See PageTransition.jsx for why that distinction matters.
+ */
+.page-enter > * {
+  animation: stagger-in 240ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
